@@ -32,11 +32,26 @@ router.get("/:id", async (req, res) => {
         "vine_helpful",
         "vine_explanation"
       );
+
     if (!data.length) {
       return res.status(404).json({ error: `Review with ID ${id} not found` });
     }
+
     res.status(200).json(data[0]);
   } catch (error) {
     res.status(500).send(`Error retrieving specific review: ${error}`);
+  }
+});
+
+router.post("/", async (req, res) => {
+  try {
+    const reviewData = req.body;
+    const [newId] = await knex("reviews").insert(reviewData);
+    const newReview = await knex("reviews").where({ id: newId }).first();
+    res.status(201).json(newReview);
+
+  } catch (error) {
+    console.error("Error adding review", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
