@@ -23,15 +23,7 @@ export function up(knex) {
     table.string("review_headline").notNullable();
     table.string("review_body").notNullable();
     table.integer("review_date").notNullable();
-    table
-      .integer("vine_user_id")
-      .unsigned()
-      .notNullable()
-      .references("users.id")
-      .onUpdate("CASCADE")
-      .onDelete("CASCADE");
-    table.boolean("vine_helpful").notNullable();
-    table.string("vine_explanation").notNullable();
+    table.json("review_misc").notNullable();
   });
 }
 /**

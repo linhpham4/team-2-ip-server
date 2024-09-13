@@ -29,10 +29,7 @@ router.get("/:id", async (req, res) => {
             "reviews.review_star_rating",
             "reviews.review_headline",
             "reviews.review_body",
-            "reviews.review_date",
-            "reviews.vine_user_id",
-            "reviews.vine_helpful",
-            "reviews.vine_explanation"
+            "reviews.review_date"
           );
 
         if (!data.length) {
@@ -44,13 +41,12 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-// Post a review for a review
+// Post a vine review for a review
 router.post("/", async (req, res) => {
   try {
     const reviewData = req.body;
-    const [newId] = await knex("reviews").insert(reviewData);
-    const newReview = await knex("reviews").where({ id: newId }).first();
-
+    const [newId] = await knex("vine_reviews").insert(reviewData); 
+    const newReview = await knex("vine_reviews").where({ id: newId });
     res.status(201).json(newReview);
   } catch (error) {
     res.status(500).json(`${error}`);
