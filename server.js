@@ -3,6 +3,7 @@ const app = express();
 import "dotenv/config";
 const PORT = process.env.PORT || 8081;
 import cors from "cors";
+import ipRoutes from "./routes/ipRoutes.js"
 
 app.use(cors())
 
