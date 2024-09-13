@@ -5,7 +5,7 @@ const router = express.Router();
 const knex = initKnex(configuration);
 
 // Get all reviews
-router.get("/", async (_req, res) => {
+router.get("/reviews", async (_req, res) => {
   try {
     const data = await knex("reviews");
     res.status(200).json(data);
@@ -15,7 +15,7 @@ router.get("/", async (_req, res) => {
 });
 
 // Get a specific review
-router.get("/:id", async (req, res) => {
+router.get("/reviews/:id", async (req, res) => {
     const { id } = req.params;
     try {
         const data = await knex("reviews")
@@ -42,12 +42,17 @@ router.get("/:id", async (req, res) => {
 });
 
 // Post a vine review for a review
-router.post("/", async (req, res) => {
+router.post("/vinereviews", async (req, res) => {
   try {
-    const reviewData = req.body;
-    const [newId] = await knex("vine_reviews").insert(reviewData); 
-    const newReview = await knex("vine_reviews").where({ id: newId });
-    res.status(201).json(newReview);
+
+    if (req.body.vine_explanation === "") {
+        return res.status(400).json("Please provide an explanation");
+      }
+
+    const vineReviewData = req.body;
+    const [newId] = await knex("vine_reviews").insert(vineReviewData); 
+    const newVineReview = await knex("vine_reviews").where({ id: newId });
+    res.status(201).json(newVineReview[0]);
   } catch (error) {
     res.status(500).json(`${error}`);
   }

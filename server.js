@@ -9,7 +9,7 @@ app.use(cors())
 
 app.use(express.json()); 
 
-app.use("/reviews", ipRoutes);
+app.use("/", ipRoutes);
 
 app.listen(PORT, () =>{
     console.log(`server listening on port ${PORT}`)
